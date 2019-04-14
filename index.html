@@ -8,16 +8,36 @@
 	<title>Scheduler</title>
 
 	<script src="libs/dhtmlxScheduler/codebase/dhtmlxscheduler.js" type="text/javascript"></script>
+	<script src="libs/dhtmlxScheduler/codebase/ext/dhtmlxscheduler_tooltip.js"></script>
+	<script src="libs/dhtmlxScheduler/codebase/ext/dhtmlxscheduler_units.js"></script>
+	<script src="libs/dhtmlxScheduler/codebase/ext/dhtmlxscheduler_limit.js"></script>
+	<script src="libs/dhtmlxScheduler/codebase/ext/dhtmlxscheduler_timeline.js"></script>
+
 	<link rel="stylesheet" href="libs/dhtmlxScheduler/codebase/dhtmlxscheduler_material.css" type="text/css">
 	<link rel="stylesheet" href="css/style.css" type="text/css">
 
 </head>
 
 <body>
-	<div id="scheduler_here" class="dhx_cal_container">
-		
-	</div>
 
+	<div id="scheduler_here" class="dhx_cal_container">
+		<div class="dhx_cal_navline">
+			<div class="dhx_cal_prev_button">&nbsp;</div>
+			<div class="dhx_cal_next_button">&nbsp;</div>
+			<div class="dhx_cal_today_button"></div>
+			<div class="dhx_cal_date"></div>
+			<div class="dhx_cal_tab" name="day_tab"></div>
+			<div class="dhx_cal_tab" name="week_tab"></div>
+			<div class="dhx_cal_tab" name="month_tab"></div>
+
+			<div class="dhx_cal_tab" name="unit_tab" style="right:280px;"></div>
+			<div class="dhx_cal_tab" name="timeline_tab" style="right:280px;"></div>
+
+		</div>
+		<div class="dhx_cal_header"></div>
+		<div class="dhx_cal_data"></div>
+	</div>
+	
 	<script src="js/script.js"></script>
 </body>
 
