@@ -2,7 +2,8 @@
 const scheduler = Scheduler.getSchedulerInstance();
 scheduler.config.multi_day = true;
 scheduler.config.hour_size_px = 88;
-const room_opts = [
+
+var room_opts = scheduler.serverList("rooms", [
 	{ key: 1, label: "412" },
 	{ key: 2, label: "401" },
 	{ key: 3, label: "406" },
@@ -10,16 +11,16 @@ const room_opts = [
 	{ key: 5, label: "412" },
 	{ key: 6, label: "505" },
 	{ key: 7, label: "512" },
-];
+]);
 
-const owner_opts = [
+var owner_opts = scheduler.serverList("owners", [
 	{ key: 1, label: "Alex Brown", color: "#F09898" },
 	{ key: 2, label: "Dan Abramov", color: "#D881CE" },
 	{ key: 3, label: "Vlad Mamedov", color: "#C085D8" },
 	{ key: 4, label: "Kiryl Zavarotny", color: "#8590D8" },
 	{ key: 5, label: "Dmitry Voitenhovich", color: "#85D8C0" },
 	{ key: 6, label: "Vadim Makeev", color: "#AFD885" },
-];
+]);
 
 // functions
 function getOwnerConfig(ownersArray, event) {
@@ -41,6 +42,16 @@ function getRoomName(roomsArray, event) {
 		}
 	}
 	return false;
+}
+
+function renderMarker() {
+	scheduler.deleteMarkedTimespan(markerId);
+  markerId = scheduler.addMarkedTimespan({
+   start_date: new Date(2005, 1, 1),
+   end_date: new Date(),
+   type: "dhx_time_block"
+ });
+ scheduler.updateView();
 }
 
 //************************************************************************************************//
@@ -82,27 +93,16 @@ scheduler.templates.hour_scale = function (date) {
 // 2
 // add select room to lightbox
 scheduler.locale.labels.section_select_room = 'Room';
-const roomSelectControl = {
-	name: "select_room",
-	height: 40,
-	map_to: "room_id",
-	type: "select",
-	options: room_opts,
-	default_value: "",
-};
-scheduler.config.lightbox.sections.push(roomSelectControl);
-
 // add select owner to lightbox
 scheduler.locale.labels.section_select_owner = 'Owner';
-const ownerSelectControl = {
-	name: "select_owner",
-	height: 40,
-	map_to: "owner_id",
-	type: "select",
-	options: owner_opts,
-	default_value: "",
-};
-scheduler.config.lightbox.sections.push(ownerSelectControl);
+
+scheduler.config.lightbox.sections = [
+	{ name: "description", height: 100, map_to: "text", type: "textarea", focus: true },
+	{ name: "Room", height: 25, options: scheduler.serverList("rooms"), map_to: "room_id", type: "select", vertical: false, default_value: "" },
+	{ name: "Owner", height: 25, options: scheduler.serverList("owners"), map_to: "owner_id", type: "select", vertical: false, default_value: "" },
+	{ name: "time", height: 72, type: "time", map_to: "auto" }
+]
+
 
 scheduler.attachEvent("onTemplatesReady", function () {
 	scheduler.templates.event_header = function (start, end, event) {
@@ -193,11 +193,16 @@ scheduler.createTimelineView({
 
 //************************************************************************************************//
 // 5
-scheduler.addMarkedTimespan({
-	start_date: "01-01-2005 00:00",
+markerId = scheduler.addMarkedTimespan({
+	start_date: new Date(2005, 1, 1),
 	end_date: new Date(),
-	type: 'dhx_time_block'
+	css: "gray_section",
+	type: "dhx_time_block"
 });
+
+setInterval(() => {
+	renderMarker();
+}, 120000);
 // 5
 //************************************************************************************************//
 
