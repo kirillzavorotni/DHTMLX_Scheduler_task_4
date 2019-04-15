@@ -2,6 +2,7 @@
 const scheduler = Scheduler.getSchedulerInstance();
 scheduler.config.multi_day = true;
 scheduler.config.hour_size_px = 88;
+var markerId = null;
 
 var room_opts = scheduler.serverList("rooms", [
 	{ key: 1, label: "412" },
@@ -21,6 +22,23 @@ var owner_opts = scheduler.serverList("owners", [
 	{ key: 5, label: "Dmitry Voitenhovich", color: "#85D8C0" },
 	{ key: 6, label: "Vadim Makeev", color: "#AFD885" },
 ]);
+
+var events = [
+	{
+		start_date: new Date(2019, 03, 15, 18, 00),
+		end_date: new Date(2019, 03, 15, 19, 00),
+		text: "Meeting",
+		room_id: 3,
+		owner_id: 3
+	},
+	{
+		start_date: new Date(2019, 03, 15, 13, 00),
+		end_date: new Date(2019, 03, 15, 14, 00),
+		text: "Meeting",
+		room_id: 5,
+		owner_id: 4
+	}
+];
 
 // functions
 function getOwnerConfig(ownersArray, event) {
@@ -46,12 +64,12 @@ function getRoomName(roomsArray, event) {
 
 function renderMarker() {
 	scheduler.deleteMarkedTimespan(markerId);
-  markerId = scheduler.addMarkedTimespan({
-   start_date: new Date(2005, 1, 1),
-   end_date: new Date(),
-   type: "dhx_time_block"
- });
- scheduler.updateView();
+	markerId = scheduler.addMarkedTimespan({
+		start_date: new Date(2005, 1, 1),
+		end_date: new Date(),
+		type: "dhx_time_block"
+	});
+	scheduler.updateView();
 }
 
 //************************************************************************************************//
@@ -196,7 +214,6 @@ scheduler.createTimelineView({
 markerId = scheduler.addMarkedTimespan({
 	start_date: new Date(2005, 1, 1),
 	end_date: new Date(),
-	css: "gray_section",
 	type: "dhx_time_block"
 });
 
@@ -210,18 +227,5 @@ setInterval(() => {
 scheduler.init('scheduler_here', new Date(), "day");
 
 // add test events
-scheduler.addEvent({
-	start_date: "14-04-2019 09:00",
-	end_date: "14-04-2019 11:00",
-	text: "Meeting",
-	room_id: 3,
-	owner_id: 3
-});
+scheduler.parse(events, "json");
 
-scheduler.addEvent({
-	start_date: "15-04-2019 16:00",
-	end_date: "15-04-2019 19:00",
-	text: "Meeting",
-	room_id: 5,
-	owner_id: 4
-});
